@@ -7,10 +7,11 @@ import (
 	"net"
 	"strconv"
 	"sync"
-
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"google.golang.org/grpc"
 )
+
+
 
 type customerServer struct {
 	mu        sync.Mutex
@@ -50,6 +51,7 @@ func generateID() int32 {
 
 func main() {
 	lis, err := net.Listen("tcp", ":2003")
+	fmt.Println("Server listening on:2003")
 	if err != nil {
 		fmt.Printf("Failed to listen:%v", err)
 		return
@@ -58,8 +60,9 @@ func main() {
 	pb.RegisterCustomerServiceServer(s, &customerServer{
 		customers: make(map[int32]*pb.CustomerRequest),
 	})
-	fmt.Println("Server listening on:2003")
 	if err := s.Serve(lis); err != nil {
 		fmt.Printf("Failed to serve:%v", err)
 	}
+	
+	
 }
